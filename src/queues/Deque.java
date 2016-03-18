@@ -3,7 +3,6 @@ import edu.princeton.cs.algs4.StdRandom;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.util.function.Consumer;
 
 public class Deque<Item> implements Iterable<Item> {
 
@@ -82,11 +81,6 @@ public class Deque<Item> implements Iterable<Item> {
         @Override
         public void remove() {
             throw new UnsupportedOperationException();
-        }
-
-        @Override
-        public void forEachRemaining(Consumer<? super Item> action) {
-
         }
     }
 
