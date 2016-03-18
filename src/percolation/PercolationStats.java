@@ -3,15 +3,13 @@ import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.StdRandom;
 import edu.princeton.cs.algs4.StdStats;
 
-import java.util.stream.IntStream;
-
 public class PercolationStats {
 
 	private int N;
-    private int T;
-    private Percolation percolation;
+	private int T;
+	private Percolation percolation;
 
-    private double[] simulatedRatios;
+	private double[] simulatedRatios;
 
 	// perform T independent experiments on an N-by-N grid
 	public PercolationStats(int N, int T) {
@@ -20,9 +18,8 @@ public class PercolationStats {
 
 		simulatedRatios = new double[T];
 
-		IntStream.range(1, T).forEach(idx -> {
-			simulatedRatios[idx] = (double) simulate(N) / (N * N);
-		});
+		for (int i = 0; i < T; i++)
+			simulatedRatios[i] = (double) simulate(N) / (N * N);
 	}
 
 	// sample mean of percolation threshold
@@ -49,8 +46,8 @@ public class PercolationStats {
 		int opened = 0;
 		percolation = new Percolation(N);
 		while (!percolation.percolates()) {
-			int i = StdRandom.uniform(0, N);
-			int j = StdRandom.uniform(0, N);
+			int i = StdRandom.uniform(1, N + 1);
+			int j = StdRandom.uniform(1, N + 1);
 			if (percolation.isOpen(i, j))
 				continue;
 			percolation.open(i, j);

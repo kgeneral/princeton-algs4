@@ -2,8 +2,6 @@ import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.StdRandom;
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
-import java.util.stream.IntStream;
-
 public class Percolation {
 	private int N;
 	private int[] filter;
@@ -26,10 +24,12 @@ public class Percolation {
 		virtualTopIndex = N * N;
 		virtualBottomIndex = N * N + 1;
 		// connect first row to virtual top
-		IntStream.range(0, N).forEach(i -> union(virtualTopIndex, i));
+		for (int i = 0; i < N; i++)
+			union(virtualTopIndex, i);
 
 		// connect first row to virtual bottom
-		IntStream.range(N * (N - 1), N * N).forEach(i -> unionFindForGlobal.union(virtualBottomIndex, i));
+		for (int i = N * (N - 1); i < N * N; i++)
+			unionFindForGlobal.union(virtualBottomIndex, i);
 	}
 
 	// open site (row i, column j) if it is not open already
@@ -78,8 +78,8 @@ public class Percolation {
 
 		int opened = 0;
 		while (!percolation.percolates()) {
-			int i = StdRandom.uniform(0, N);
-			int j = StdRandom.uniform(0, N);
+			int i = StdRandom.uniform(1, N + 1);
+			int j = StdRandom.uniform(1, N + 1);
 
 			StdOut.println(i + "," + j);
 
