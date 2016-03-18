@@ -1,16 +1,25 @@
+import edu.princeton.cs.algs4.WeightedQuickUnionUF;
+
 import java.util.stream.IntStream;
 
 public class Percolation {
-	int N;
-	int[][] filter;
-	int top = -1;
-	int bottom = -2;
+	private int N;
+	private int virtualTopIndex;
+	private int virtualBottomIndex;
+
+	private WeightedQuickUnionUF weightedQuickUnionUF;
 
 	// create N-by-N grid, with all sites blocked
 	public Percolation(int N) {
-		this.N = N;
-		filter = new int[N][N];
-		IntStream.range(0, N).forEach(i -> IntStream.range(0, N).forEach(j -> filter[i][j] = i * N + j));
+		weightedQuickUnionUF = new WeightedQuickUnionUF(N * N + 2);
+		virtualTopIndex = N * N;
+		virtualBottomIndex = N * N + 1;
+		// connect first row to virtaul top
+		IntStream.range(0, N).forEach(i -> weightedQuickUnionUF.union(virtualTopIndex, i));
+
+		// connect first row to virtual bottom
+		IntStream.range(N * (N - 1), N * N).forEach(i -> weightedQuickUnionUF.union(virtualBottomIndex, i));
+
 	}
 
 	// open site (row i, column j) if it is not open already
@@ -33,16 +42,11 @@ public class Percolation {
 		return false;
 	}
 
-	public void print() {
-		IntStream.range(0, N).forEach(
-				i -> IntStream.range(0, N).forEach(j -> System.out.println(i + "," + j + " = " + filter[i][j])));
-	}
-
 	// test client (optional)
 	public static void main(String[] args) {
 		int N = 5;
 		Percolation percolation = new Percolation(N);
-		percolation.print();
+		percolation.percolates();
 
 	}
 }
