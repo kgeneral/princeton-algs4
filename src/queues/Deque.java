@@ -3,6 +3,7 @@ import edu.princeton.cs.algs4.StdRandom;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.function.Consumer;
 
 public class Deque<Item> implements Iterable<Item> {
 
@@ -29,13 +30,13 @@ public class Deque<Item> implements Iterable<Item> {
 
     // add the item to the front
     public void addFirst(Item item) {
-        if(item == null)
+        if (item == null)
             throw new NullPointerException();
     }
 
     // add the item to the end
     public void addLast(Item item) {
-        if(item == null)
+        if (item == null)
             throw new NullPointerException();
 
         if (size() >= data.length)
@@ -45,6 +46,8 @@ public class Deque<Item> implements Iterable<Item> {
 
     // remove and return the item from the front
     public Item removeFirst() {
+        if (isEmpty())
+            throw new NoSuchElementException();
         return null;
     }
 
@@ -59,7 +62,32 @@ public class Deque<Item> implements Iterable<Item> {
 
     // return an iterator over items in order from front to end
     public Iterator<Item> iterator() {
-        return null;
+        return new Itr();
+    }
+
+    private class Itr implements Iterator<Item> {
+
+        @Override
+        public boolean hasNext() {
+            return false;
+        }
+
+        @Override
+        public Item next() {
+            if(head == tail)
+                throw new NoSuchElementException();
+            return null;
+        }
+
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
+        public void forEachRemaining(Consumer<? super Item> action) {
+
+        }
     }
 
     private void resize(int targetSize) {
