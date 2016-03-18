@@ -32,29 +32,30 @@ public class Percolation {
 
 	// open site (row i, column j) if it is not open already
 	public void open(int i, int j) {
-		int index = i * N + j;
+		int index = (i - 1) * N + j - 1;
 		filter[index] = 1;
-		if (j < N - 1 && isOpen(i, j + 1))
+		if (j < N && isOpen(i, j + 1))
 			weightedQuickUnionUF.union(index, index + 1);
-		if (j > 0 && isOpen(i, j - 1))
+		if (j > 1 && isOpen(i, j - 1))
 			weightedQuickUnionUF.union(index, index - 1);
-		if (i < N - 1 && isOpen(i + 1, j))
+		if (i < N && isOpen(i + 1, j))
 			weightedQuickUnionUF.union(index, index + N);
-		if (i > 0 && isOpen(i - 1, j))
+		if (i > 1 && isOpen(i - 1, j))
 			weightedQuickUnionUF.union(index, index - N);
 	}
 
 	// is site (row i, column j) open?
 	public boolean isOpen(int i, int j) {
-		return filter[i * N + j] == 1;
+		int index = (i - 1) * N + j - 1;
+		if (index < 0 || index >= N * N)
+			throw new IndexOutOfBoundsException();
+		return filter[index] == 1;
 	}
 
-	// is site (row i, column j) full?
-	// A full site is an open site that can be connected to an open site -
-	// in the top row via a chain of neighboring (left, right, up, down) open sites.
+	// is site (row i, column j) full? - opened and connected with top
 	public boolean isFull(int i, int j) {
-		return isOpen(i, j) && j < N - 1 && isOpen(i, j + 1) && j > 0 && isOpen(i, j - 1) && i < N - 1
-				&& isOpen(i + 1, j) && i > 0 && isOpen(i - 1, j);
+		int index = (i - 1) * N + j - 1;
+		return isOpen(i, j) && weightedQuickUnionUF.connected(index, virtualTopIndex);
 	}
 
 	// does the system percolate?
