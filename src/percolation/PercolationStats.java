@@ -19,7 +19,7 @@ public class PercolationStats {
         simulatedRatios = new double[T];
 
         for (int i = 0; i < T; i++)
-            simulatedRatios[i] = (double) simulate(N) / (N * N);
+            simulatedRatios[i] = (double) simulate() / (N * N);
     }
 
     // sample mean of percolation threshold
@@ -42,7 +42,7 @@ public class PercolationStats {
         return mean() + 1.96 * stddev() / Math.sqrt(T);
     }
 
-    private int simulate(int N) {
+    private int simulate() {
         int opened = 0;
         percolation = new Percolation(N);
         while (!percolation.percolates()) {
