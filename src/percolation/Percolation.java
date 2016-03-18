@@ -10,7 +10,8 @@ public class Percolation {
 	private int virtualTopIndex;
 	private int virtualBottomIndex;
 
-	private WeightedQuickUnionUF weightedQuickUnionUF;
+	private WeightedQuickUnionUF unionFindForUpwardConnectivity;
+	private WeightedQuickUnionUF unionFindForGlobal;
 
 	// create N-by-N grid, with all sites blocked
 	public Percolation(int N) {
@@ -20,14 +21,15 @@ public class Percolation {
 		this.N = N;
 		filter = new int[N * N];
 
-		weightedQuickUnionUF = new WeightedQuickUnionUF(N * N + 2);
+		unionFindForGlobal = new WeightedQuickUnionUF(N * N + 2);
+		unionFindForUpwardConnectivity = new WeightedQuickUnionUF(N * N + 1);
 		virtualTopIndex = N * N;
 		virtualBottomIndex = N * N + 1;
 		// connect first row to virtual top
-		IntStream.range(0, N).forEach(i -> weightedQuickUnionUF.union(virtualTopIndex, i));
+		IntStream.range(0, N).forEach(i -> union(virtualTopIndex, i));
 
 		// connect first row to virtual bottom
-		IntStream.range(N * (N - 1), N * N).forEach(i -> weightedQuickUnionUF.union(virtualBottomIndex, i));
+		IntStream.range(N * (N - 1), N * N).forEach(i -> unionFindForGlobal.union(virtualBottomIndex, i));
 	}
 
 	// open site (row i, column j) if it is not open already
@@ -35,13 +37,18 @@ public class Percolation {
 		int index = (i - 1) * N + j - 1;
 		filter[index] = 1;
 		if (j < N && isOpen(i, j + 1))
-			weightedQuickUnionUF.union(index, index + 1);
+			union(index, index + 1);
 		if (j > 1 && isOpen(i, j - 1))
-			weightedQuickUnionUF.union(index, index - 1);
+			union(index, index - 1);
 		if (i < N && isOpen(i + 1, j))
-			weightedQuickUnionUF.union(index, index + N);
+			union(index, index + N);
 		if (i > 1 && isOpen(i - 1, j))
-			weightedQuickUnionUF.union(index, index - N);
+			union(index, index - N);
+	}
+
+	private void union(int p, int q) {
+		unionFindForGlobal.union(p, q);
+		unionFindForUpwardConnectivity.union(p, q);
 	}
 
 	// is site (row i, column j) open?
@@ -55,12 +62,13 @@ public class Percolation {
 	// is site (row i, column j) full? - opened and connected with top
 	public boolean isFull(int i, int j) {
 		int index = (i - 1) * N + j - 1;
-		return isOpen(i, j) && weightedQuickUnionUF.connected(index, virtualTopIndex);
+		return isOpen(i, j) && unionFindForGlobal.connected(index, virtualTopIndex)
+				&& unionFindForUpwardConnectivity.connected(index, virtualTopIndex);
 	}
 
 	// does the system percolate?
 	public boolean percolates() {
-		return weightedQuickUnionUF.connected(virtualTopIndex, virtualBottomIndex);
+		return unionFindForGlobal.connected(virtualTopIndex, virtualBottomIndex);
 	}
 
 	// test client (optional)
