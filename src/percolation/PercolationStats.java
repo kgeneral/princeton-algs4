@@ -7,11 +7,11 @@ import java.util.stream.IntStream;
 
 public class PercolationStats {
 
-	int N;
-	int T;
-	Percolation percolation;
+	private int N;
+    private int T;
+    private Percolation percolation;
 
-	double[] simulatedRatios;
+    private double[] simulatedRatios;
 
 	// perform T independent experiments on an N-by-N grid
 	public PercolationStats(int N, int T) {

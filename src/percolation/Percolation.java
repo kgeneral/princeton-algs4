@@ -14,6 +14,9 @@ public class Percolation {
 
 	// create N-by-N grid, with all sites blocked
 	public Percolation(int N) {
+		if (N < 1)
+			throw new IllegalArgumentException();
+
 		this.N = N;
 		filter = new int[N * N];
 
@@ -50,11 +53,8 @@ public class Percolation {
 	// A full site is an open site that can be connected to an open site -
 	// in the top row via a chain of neighboring (left, right, up, down) open sites.
 	public boolean isFull(int i, int j) {
-		return isOpen(i, j)
-				&& j < N - 1 && isOpen(i, j + 1)
-				&& j > 0 && isOpen(i, j - 1)
-				&& i < N - 1 && isOpen(i + 1, j)
-				&& i > 0 && isOpen(i - 1, j);
+		return isOpen(i, j) && j < N - 1 && isOpen(i, j + 1) && j > 0 && isOpen(i, j - 1) && i < N - 1
+				&& isOpen(i + 1, j) && i > 0 && isOpen(i - 1, j);
 	}
 
 	// does the system percolate?
