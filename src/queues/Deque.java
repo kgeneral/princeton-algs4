@@ -80,7 +80,7 @@ public class Deque<Item> implements Iterable<Item> {
 
     // unit testing
     public static void main(String[] args) {
-        int N = 100;
+        int N = StdRandom.uniform(100, 500);
         Deque<Integer> deque = new Deque<>();
         for (int i = 0; i < N; i++) {
             int val = StdRandom.uniform(N);
