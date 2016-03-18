@@ -63,9 +63,9 @@ public class Deque<Item> implements Iterable<Item> {
     }
 
     private void resize(int targetSize) {
+        // no more shrink under BASE_SIZE
         if (Math.max(data.length, targetSize) <= BASE_SIZE)
             return;
-        StdOut.println("resized to " + data.length + " -> " + targetSize);
 
         Item[] resizedData = (Item[]) new Object[targetSize];
         int movableLength = Math.min(data.length, targetSize);
@@ -88,13 +88,13 @@ public class Deque<Item> implements Iterable<Item> {
             deque.addLast(val);
         }
         StdOut.println();
-        StdOut.println(deque.size());
+        StdOut.println("size : " + deque.size());
 
         for (int i = 0; i < N; i++)
             StdOut.print(deque.removeLast() + " ");
 
         StdOut.println();
-        StdOut.println(deque.size());
+        StdOut.println("size : " + deque.size());
 
 
     }
