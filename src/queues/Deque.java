@@ -6,14 +6,14 @@ import java.util.NoSuchElementException;
 
 public class Deque<Item> implements Iterable<Item> {
 
-    private static int INITIAL_SIZE = 10;
+    private static int BASE_SIZE = 10;
     private Item[] data;
     private int head;
     private int tail;
 
     // construct an empty deque
     public Deque() {
-        data = (Item[]) new Object[INITIAL_SIZE];
+        data = (Item[]) new Object[BASE_SIZE];
         head = tail = 0;
     }
 
@@ -47,6 +47,8 @@ public class Deque<Item> implements Iterable<Item> {
     public Item removeLast() {
         if (isEmpty())
             throw new NoSuchElementException();
+        if (size() <= data.length / 4)
+            resize(data.length / 2);
         return data[--tail];
     }
 
@@ -56,6 +58,10 @@ public class Deque<Item> implements Iterable<Item> {
     }
 
     private void resize(int targetSize) {
+        if (Math.max(data.length, targetSize) <= BASE_SIZE)
+            return;
+        StdOut.println("resized to " + data.length + " -> " + targetSize);
+
         Item[] resizedData = (Item[]) new Object[targetSize];
         int movableLength = Math.min(data.length, targetSize);
         for (int i = head; i < movableLength + head; i++)
