@@ -34,6 +34,9 @@ public class Percolation {
 
     // open site (row i, column j) if it is not open already
     public void open(int i, int j) {
+        if (!isInboundedIndex(i, j))
+            throw new IndexOutOfBoundsException();
+
         int index = (i - 1) * N + j - 1;
         filter[index] = 1;
         if (j < N && isOpen(i, j + 1))
@@ -46,21 +49,21 @@ public class Percolation {
             union(index, index - N);
     }
 
-    private void union(int p, int q) {
-        unionFindForGlobal.union(p, q);
-        unionFindForUpwardConnectivity.union(p, q);
-    }
 
     // is site (row i, column j) open?
     public boolean isOpen(int i, int j) {
-        int index = (i - 1) * N + j - 1;
-        if (index < 0 || index >= N * N)
+        if (!isInboundedIndex(i, j))
             throw new IndexOutOfBoundsException();
+
+        int index = (i - 1) * N + j - 1;
         return filter[index] == 1;
     }
 
     // is site (row i, column j) full? - opened and connected with top
     public boolean isFull(int i, int j) {
+        if (!isInboundedIndex(i, j))
+            throw new IndexOutOfBoundsException();
+
         int index = (i - 1) * N + j - 1;
         return isOpen(i, j) && unionFindForGlobal.connected(index, virtualTopIndex)
                 && unionFindForUpwardConnectivity.connected(index, virtualTopIndex);
@@ -69,6 +72,15 @@ public class Percolation {
     // does the system percolate?
     public boolean percolates() {
         return unionFindForGlobal.connected(virtualTopIndex, virtualBottomIndex);
+    }
+
+    private boolean isInboundedIndex(int i, int j) {
+        return i >= 1 && i <= N && j >= 1 && j <= N;
+    }
+
+    private void union(int p, int q) {
+        unionFindForGlobal.union(p, q);
+        unionFindForUpwardConnectivity.union(p, q);
     }
 
     // test client (optional)
