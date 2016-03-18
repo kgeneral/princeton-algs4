@@ -7,18 +7,18 @@ public class Percolation {
 	private int virtualTopIndex;
 	private int virtualBottomIndex;
 
-	private WeightedQuickUnionUF weightedQuickUnionUF;
+	private WeightedQuickUnionUF filter;
 
 	// create N-by-N grid, with all sites blocked
 	public Percolation(int N) {
-		weightedQuickUnionUF = new WeightedQuickUnionUF(N * N + 2);
+		filter = new WeightedQuickUnionUF(N * N + 2);
 		virtualTopIndex = N * N;
 		virtualBottomIndex = N * N + 1;
 		// connect first row to virtaul top
-		IntStream.range(0, N).forEach(i -> weightedQuickUnionUF.union(virtualTopIndex, i));
+		IntStream.range(0, N).forEach(i -> filter.union(virtualTopIndex, i));
 
 		// connect first row to virtual bottom
-		IntStream.range(N * (N - 1), N * N).forEach(i -> weightedQuickUnionUF.union(virtualBottomIndex, i));
+		IntStream.range(N * (N - 1), N * N).forEach(i -> filter.union(virtualBottomIndex, i));
 
 	}
 
