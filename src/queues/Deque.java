@@ -29,10 +29,15 @@ public class Deque<Item> implements Iterable<Item> {
 
     // add the item to the front
     public void addFirst(Item item) {
+        if(item == null)
+            throw new NullPointerException();
     }
 
     // add the item to the end
     public void addLast(Item item) {
+        if(item == null)
+            throw new NullPointerException();
+
         if (size() >= data.length)
             resize(data.length * 2);
         data[tail++] = item;
