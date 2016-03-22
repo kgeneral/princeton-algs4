@@ -109,5 +109,17 @@ public class Point implements Comparable<Point> {
      */
     public static void main(String[] args) {
         /* YOUR CODE HERE */
+        StdDraw.show(0);
+
+        StdDraw.setXscale(0, 10);
+        StdDraw.setYscale(0, 10);
+
+        Point p1 = new Point(1, 2);
+        Point p2 = new Point(2, 6);
+        p1.drawTo(p2);
+
+        StdDraw.show();
+
+
     }
 }
