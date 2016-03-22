@@ -122,6 +122,9 @@ public class Deque<Item> implements Iterable<Item> {
     }
 
     public void print() {
+        StdOut.println("head : " + head);
+        StdOut.println("tail : " + tail);
+        StdOut.println("size : " + size);
         for (Item item : this) {
             StdOut.print(item + ", ");
         }
