@@ -48,7 +48,9 @@ public class Deque<Item> implements Iterable<Item> {
 
         if (size() >= data.length)
             resize(data.length * 2);
-        data[++tail] = item;
+        if (++tail >= data.length)
+            tail %= data.length;
+        data[tail] = item;
         size++;
     }
 
@@ -72,7 +74,11 @@ public class Deque<Item> implements Iterable<Item> {
         if (size() <= data.length / 4)
             resize(data.length / 2);
         size--;
-        return data[tail--];
+        Item removed = data[tail--];
+        if (tail < 0)
+            tail += data.length;
+
+        return removed;
     }
 
     // return an iterator over items in order from front to end
@@ -122,6 +128,7 @@ public class Deque<Item> implements Iterable<Item> {
     }
 
     public void print() {
+        StdOut.println("data array size : " + data.length);
         StdOut.println("head : " + head);
         StdOut.println("tail : " + tail);
         StdOut.println("size : " + size);
