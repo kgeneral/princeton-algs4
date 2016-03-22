@@ -2,8 +2,8 @@
 by Kevin Wayne, Robert Sedgewick
 
 ##Solved status
-- [x] Programming Assignment 1 - Percolation (Need to fix minor bugs)
-- [ ] Programming Assignment 2 - Randomized Queues and Deques
+- [x] Programming Assignment 1 - Percolation (86.25)
+- [x] Programming Assignment 2 - Randomized Queues and Deques (89.52)
 - [ ] TBD
 
 ##reference
