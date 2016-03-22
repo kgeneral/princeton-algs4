@@ -1,5 +1,3 @@
-import edu.princeton.cs.algs4.StdOut;
-
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -127,14 +125,14 @@ public class Deque<Item> implements Iterable<Item> {
         data = resizedData;
     }
 
-    public void print() {
-        StdOut.println("data array size : " + data.length);
-        StdOut.println("head : " + head);
-        StdOut.println("tail : " + tail);
-        StdOut.println("size : " + size);
-        for (Item item : this) {
-            StdOut.print(item + ", ");
-        }
-        StdOut.println();
-    }
+//    public void print() {
+//        StdOut.println("data array size : " + data.length);
+//        StdOut.println("head : " + head);
+//        StdOut.println("tail : " + tail);
+//        StdOut.println("size : " + size);
+//        for (Item item : this) {
+//            StdOut.print(item + ", ");
+//        }
+//        StdOut.println();
+//    }
 }

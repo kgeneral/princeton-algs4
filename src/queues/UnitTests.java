@@ -29,12 +29,12 @@ public class UnitTests {
             } catch (ArrayIndexOutOfBoundsException e) {
                 StdOut.println("operationCase : " + operationCase);
                 StdOut.println("ArrayIndexOutOfBoundsException");
-                deque.print();
+                //deque.print();
                 e.printStackTrace();
                 throw new RuntimeException();
             }
         });
-        deque.print();
+        //deque.print();
     }
 
 }
