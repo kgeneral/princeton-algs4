@@ -5,7 +5,8 @@ by Kevin Wayne, Robert Sedgewick
 ### Part I
 - [x] Programming Assignment 1 - Percolation (86.25)
 - [x] Programming Assignment 2 - Randomized Queues and Deques (89.52)
-- [ ] Programming Assignment 3 - Pattern Recognition Assignment
+- [x] Programming Assignment 3 - Pattern Recognition Assignment (92.68)
+- [ ] Programming Assignment 4 - 8-Puzzle.pdf
 - [ ] TBD
 
 ### Part II
