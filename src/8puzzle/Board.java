@@ -43,10 +43,9 @@ public class Board {
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
 
-                if (board[i][j] == 0) continue;
-
-                if (board[i][j] != goal[i][j])
-                    hamming[i * N + j] = 1;
+                if (board[i][j] != 0)
+                    if (board[i][j] != goal[i][j])
+                        hamming[i * N + j] = 1;
 
                 int target = goal[i][j];
 
@@ -156,10 +155,10 @@ public class Board {
 
     // string representation of this board (in the output format specified below)
     public String toString() {
-        String print = "";
+        String print = N + "\n";
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
-                print += board[i][j] + " ";
+                print += " " + board[i][j] + " ";
             }
             print += "\n";
         }
