@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class Board implements Comparable<Board> {
+public class Board {
 
     private int N;
     private int[][] board;
@@ -101,7 +101,7 @@ public class Board implements Comparable<Board> {
 
         if (comparer.dimension() != N) return false;
 
-        //if (comparer.hamming() != hamming()) return false;
+        if (comparer.hamming() != hamming()) return false;
 
         if (comparer.manhattan() != manhattan()) return false;
 
@@ -168,12 +168,5 @@ public class Board implements Comparable<Board> {
 
     // unit tests (not graded)
     public static void main(String[] args) {
-    }
-
-    @Override
-    public int compareTo(Board that) {
-        if (manhattan() >= that.manhattan())
-            return 1;
-        return -1;
     }
 }

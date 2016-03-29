@@ -20,16 +20,26 @@ public class Solver {
     // find a solution to the initial board (using the A* algorithm)
     public Solver(Board initial) {
         solution = new ArrayList<>();
-        minPQ = new MinPQ<>();
+        minPQ = new MinPQ<>((b1, b2) -> {
+            if (b1.manhattan() == b2.manhattan())
+                return 0;
+            if (b1.manhattan() > b2.manhattan())
+                return 1;
+            return -1;
+        });
+
         minPQ.insert(initial);
 
-        Board dequeued;
+        Board dequeued = initial;
         while (true) {
+            Board prev = dequeued;
             dequeued = minPQ.delMin();
             solution.add(dequeued);
-            if(dequeued.isGoal()) break;
-            for (Board neighbor : dequeued.neighbors())
-                minPQ.insert(neighbor);
+            if (dequeued.isGoal()) break;
+            for (Board neighbor : dequeued.neighbors()) {
+                if (!neighbor.equals(prev))
+                    minPQ.insert(neighbor);
+            }
             moves++;
         }
 
