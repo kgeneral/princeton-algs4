@@ -1,4 +1,7 @@
-public class Board {
+import java.util.ArrayList;
+import java.util.List;
+
+public class Board implements Comparable<Board> {
 
     private int N;
     private int[][] board;
@@ -7,16 +10,19 @@ public class Board {
     private int[] hamming;
     private int[] manhattan;
 
+    private int blankSquareRow;
+    private int blankSquareColumn;
+
     // construct a board from an N-by-N array of blocks
     // (where blocks[i][j] = block in row i, column j)
     public Board(int[][] blocks) {
         N = blocks.length;
         board = new int[N][N];
         goal = new int[N][N];
-        hamming = new int[N * N - 1];
-        manhattan = new int[N * N - 1];
+        hamming = new int[N * N];
+        manhattan = new int[N * N];
 
-        String[] index = new String[N * N - 1];
+        String[] index = new String[N * N];
 
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
@@ -24,7 +30,12 @@ public class Board {
                 goal[i][j] = i * N + j + 1;
 
                 if (board[i][j] != 0)
-                    index[blocks[i][j] - 1] = i + "," + j;
+                    index[blocks[i][j]] = i + "," + j;
+                else {
+                    blankSquareRow = i;
+                    blankSquareColumn = j;
+                }
+
             }
         }
         goal[N - 1][N - 1] = 0;
@@ -41,8 +52,8 @@ public class Board {
 
                 if (goal[i][j] == 0) continue;
 
-                int row = Integer.parseInt(index[target - 1].split(",")[0]);
-                int column = Integer.parseInt(index[target - 1].split(",")[1]);
+                int row = Integer.parseInt(index[target].split(",")[0]);
+                int column = Integer.parseInt(index[target].split(",")[1]);
 
                 manhattan[i * N + j] = Math.abs(i - row) + Math.abs(j - column);
 
@@ -85,12 +96,62 @@ public class Board {
 
     // does this board equal y?
     public boolean equals(Object y) {
-        return false;
+        if (!(y instanceof Board)) return false;
+        Board comparer = (Board) y;
+
+        if (comparer.dimension() != N) return false;
+
+        //if (comparer.hamming() != hamming()) return false;
+
+        if (comparer.manhattan() != manhattan()) return false;
+
+        return true;
     }
 
     // all neighboring boards
     public Iterable<Board> neighbors() {
-        return null;
+        int[][] neighbor = new int[N][N];
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                neighbor[i][j] = board[i][j];
+            }
+        }
+
+        List<Board> neighbors = new ArrayList<>();
+        if (blankSquareRow < N - 1) {
+            swapBlankSquareRow(neighbor, 1);
+            neighbors.add(new Board(neighbor));
+            swapBlankSquareRow(neighbor, 1);
+        }
+        if (blankSquareRow > 0) {
+            swapBlankSquareRow(neighbor, -1);
+            neighbors.add(new Board(neighbor));
+            swapBlankSquareRow(neighbor, -1);
+        }
+        if (blankSquareColumn < N - 1) {
+            swapBlankSquareColumn(neighbor, 1);
+            neighbors.add(new Board(neighbor));
+            swapBlankSquareColumn(neighbor, 1);
+        }
+        if (blankSquareColumn > 0) {
+            swapBlankSquareColumn(neighbor, -1);
+            neighbors.add(new Board(neighbor));
+            swapBlankSquareColumn(neighbor, -1);
+        }
+
+        return neighbors;
+    }
+
+    private void swapBlankSquareColumn(int[][] neighbor, int column) {
+        int temp = neighbor[blankSquareRow][blankSquareColumn];
+        neighbor[blankSquareRow][blankSquareColumn] = neighbor[blankSquareRow][blankSquareColumn + column];
+        neighbor[blankSquareRow][blankSquareColumn + column] = temp;
+    }
+
+    private void swapBlankSquareRow(int[][] neighbor, int row) {
+        int temp = neighbor[blankSquareRow][blankSquareColumn];
+        neighbor[blankSquareRow][blankSquareColumn] = neighbor[blankSquareRow + row][blankSquareColumn];
+        neighbor[blankSquareRow + row][blankSquareColumn] = temp;
     }
 
     // string representation of this board (in the output format specified below)
@@ -107,5 +168,12 @@ public class Board {
 
     // unit tests (not graded)
     public static void main(String[] args) {
+    }
+
+    @Override
+    public int compareTo(Board that) {
+        if (manhattan() >= that.manhattan())
+            return 1;
+        return -1;
     }
 }
