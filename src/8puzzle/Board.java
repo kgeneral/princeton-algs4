@@ -6,8 +6,8 @@ public class Board {
     private int N;
     private int[][] board;
 
-    private int hamming;
-    private int manhattan;
+    private int hamming = 0;
+    private int manhattan = 0;
 
     private int blankSquareRow;
     private int blankSquareColumn;
