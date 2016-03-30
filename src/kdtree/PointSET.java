@@ -1,7 +1,4 @@
-import edu.princeton.cs.algs4.Point2D;
-import edu.princeton.cs.algs4.Queue;
-import edu.princeton.cs.algs4.RectHV;
-import edu.princeton.cs.algs4.SET;
+import edu.princeton.cs.algs4.*;
 
 public class PointSET {
 
@@ -53,7 +50,13 @@ public class PointSET {
 
     // a nearest neighbor in the set to point p; null if the set is empty
     public Point2D nearest(Point2D p) {
-        return p;
+        MinPQ<Point2D> nearest = new MinPQ<>((p1, p2) -> {
+            if(p.distanceTo(p1) == p.distanceTo(p2))
+                return 0;
+
+            return (p.distanceTo(p1) < p.distanceTo(p2))? -1 : 1;
+        });
+        return nearest.delMin();
     }
 
     // unit testing of the methods (optional)
