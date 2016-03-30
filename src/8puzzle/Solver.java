@@ -13,34 +13,29 @@ The success of this approach hinges on the choice of priority function for a sea
 * */
 public class Solver {
 
-    private MinPQ<Board> minPQ;
+    private MinPQ<SolvableBoard> minPQ;
     private int moves = 0;
     private List<Board> solution;
 
     // find a solution to the initial board (using the A* algorithm)
+    // TODO : remove board if another optimal path finded
     public Solver(Board initial) {
         solution = new ArrayList<>();
-        minPQ = new MinPQ<>((b1, b2) -> {
-            if (b1.manhattan() == b2.manhattan())
-                return 0;
-            if (b1.manhattan() > b2.manhattan())
-                return 1;
-            return -1;
-        });
+        minPQ = new MinPQ<>();
 
-        minPQ.insert(initial);
-
+        minPQ.insert(new SolvableBoard(initial, moves));
         Board dequeued = initial;
-        while (true) {
-            Board prev = dequeued;
-            dequeued = minPQ.delMin();
+        while (!minPQ.isEmpty()) {
+
             solution.add(dequeued);
             if (dequeued.isGoal()) break;
-            for (Board neighbor : dequeued.neighbors()) {
-                if (!neighbor.equals(prev))
-                    minPQ.insert(neighbor);
-            }
             moves++;
+            for (Board neighbor : dequeued.neighbors()) {
+                if (!solution.contains(neighbor))
+                    minPQ.insert(new SolvableBoard(neighbor, moves));
+            }
+            dequeued = minPQ.delMin().getBoard();
+
         }
 
     }
@@ -62,5 +57,51 @@ public class Solver {
 
     // solve a slider puzzle (given below)
     public static void main(String[] args) {
+    }
+
+
+    private class SolvableBoard implements Comparable<SolvableBoard> {
+        private Board board;
+        private int moved;
+
+        public SolvableBoard(Board board, int moved) {
+            this.board = board;
+            this.moved = moved;
+        }
+
+        public int priority() {
+            return board.manhattan() + moved;
+        }
+
+        // TODO : tune priority condition
+        @Override
+        public int compareTo(SolvableBoard that) {
+            if (this.moved == that.moved) {
+
+                if (this.priority() == that.priority()) {
+                    if (this.board.hamming() == that.board.hamming())
+                        return 0;
+
+                    return (this.board.hamming() > that.board.hamming()) ? -1 : 1;
+                }
+
+                return (this.priority() < that.priority()) ? -1 : 1;
+            }
+            if (this.moved < that.moved)
+                return 1;
+            return -1;
+        }
+
+        public boolean isGoal() {
+            return board.isGoal();
+        }
+
+        public Iterable<Board> neighbors() {
+            return board.neighbors();
+        }
+
+        public Board getBoard() {
+            return board;
+        }
     }
 }
