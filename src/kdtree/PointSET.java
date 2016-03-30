@@ -1,4 +1,5 @@
 import edu.princeton.cs.algs4.Point2D;
+import edu.princeton.cs.algs4.Queue;
 import edu.princeton.cs.algs4.RectHV;
 import edu.princeton.cs.algs4.SET;
 
@@ -34,13 +35,20 @@ public class PointSET {
 
     // draw all points to standard draw
     public void draw() {
-        for(Point2D point : points)
+        for (Point2D point : points)
             point.draw();
     }
 
     // all points that are inside the rectangle
     public Iterable<Point2D> range(RectHV rect) {
-        return null;
+        Queue<Point2D> ranged = new Queue<>();
+        for (Point2D point : points)
+            if (rect.xmin() <= point.x())
+                if (rect.xmax() >= point.x())
+                    if (rect.ymin() <= point.y())
+                        if (rect.ymax() >= point.y())
+                            ranged.enqueue(point);
+        return ranged;
     }
 
     // a nearest neighbor in the set to point p; null if the set is empty
