@@ -18,8 +18,6 @@ public class Board {
         N = blocks.length;
         board = new int[N][N];
 
-        String[] index = new String[N * N];
-
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
                 board[i][j] = blocks[i][j];
