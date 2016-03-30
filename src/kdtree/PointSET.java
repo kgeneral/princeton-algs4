@@ -56,6 +56,8 @@ public class PointSET {
 
             return (p.distanceTo(p1) < p.distanceTo(p2))? -1 : 1;
         });
+        for (Point2D point : points)
+            nearest.insert(point);
         return nearest.delMin();
     }
 
