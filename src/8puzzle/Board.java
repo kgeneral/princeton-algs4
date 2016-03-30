@@ -24,36 +24,25 @@ public class Board {
             for (int j = 0; j < N; j++) {
                 board[i][j] = blocks[i][j];
 
-                if (board[i][j] != 0)
-                    index[blocks[i][j]] = i + "," + j;
+                if (board[i][j] != 0) {
+                    int target = board[i][j];
+                    int goal = i * N + j + 1;
+
+                    if (target != goal) {
+                        hamming += 1;
+                        int row = goal / N;
+                        int column = goal % N;
+                        if (i != N - 1 || j != N - 1)
+                            manhattan += Math.abs(i - row) + Math.abs(j - column);
+                    }
+
+                }
                 else {
                     blankSquareRow = i;
                     blankSquareColumn = j;
                 }
-
             }
         }
-
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < N; j++) {
-
-                if (board[i][j] != 0)
-                    if (board[i][j] != i * N + j + 1)
-                        hamming += 1;
-
-                int target = i * N + j + 1;
-
-                if (i == N - 1 && j == N - 1) continue;
-
-                int row = Integer.parseInt(index[target].split(",")[0]);
-                int column = Integer.parseInt(index[target].split(",")[1]);
-
-                manhattan += Math.abs(i - row) + Math.abs(j - column);
-
-            }
-        }
-
-        dimension();
     }
 
     // board dimension N
