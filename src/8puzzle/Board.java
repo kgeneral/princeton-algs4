@@ -5,7 +5,6 @@ public class Board {
 
     private int N;
     private int[][] board;
-    private int[][] goal;
 
     private int[] hamming;
     private int[] manhattan;
@@ -18,7 +17,6 @@ public class Board {
     public Board(int[][] blocks) {
         N = blocks.length;
         board = new int[N][N];
-        goal = new int[N][N];
         hamming = new int[N * N];
         manhattan = new int[N * N];
 
@@ -27,7 +25,6 @@ public class Board {
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
                 board[i][j] = blocks[i][j];
-                goal[i][j] = i * N + j + 1;
 
                 if (board[i][j] != 0)
                     index[blocks[i][j]] = i + "," + j;
@@ -38,18 +35,17 @@ public class Board {
 
             }
         }
-        goal[N - 1][N - 1] = 0;
 
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
 
                 if (board[i][j] != 0)
-                    if (board[i][j] != goal[i][j])
+                    if (board[i][j] != i * N + j + 1)
                         hamming[i * N + j] = 1;
 
-                int target = goal[i][j];
+                int target = i * N + j + 1;
 
-                if (goal[i][j] == 0) continue;
+                if (i == N - 1 && j == N - 1) continue;
 
                 int row = Integer.parseInt(index[target].split(",")[0]);
                 int column = Integer.parseInt(index[target].split(",")[1]);
