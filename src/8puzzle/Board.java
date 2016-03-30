@@ -7,7 +7,7 @@ public class Board {
     private int[][] board;
 
     private int hamming;
-    private int[] manhattan;
+    private int manhattan;
 
     private int blankSquareRow;
     private int blankSquareColumn;
@@ -17,7 +17,6 @@ public class Board {
     public Board(int[][] blocks) {
         N = blocks.length;
         board = new int[N][N];
-        manhattan = new int[N * N];
 
         String[] index = new String[N * N];
 
@@ -49,7 +48,7 @@ public class Board {
                 int row = Integer.parseInt(index[target].split(",")[0]);
                 int column = Integer.parseInt(index[target].split(",")[1]);
 
-                manhattan[i * N + j] = Math.abs(i - row) + Math.abs(j - column);
+                manhattan += Math.abs(i - row) + Math.abs(j - column);
 
             }
         }
@@ -69,9 +68,6 @@ public class Board {
 
     // sum of Manhattan distances between blocks and goal
     public int manhattan() {
-        int manhattan = 0;
-        for (int i = 0; i < this.manhattan.length; i++)
-            manhattan += this.manhattan[i];
         return manhattan;
     }
 
