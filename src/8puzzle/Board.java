@@ -79,6 +79,10 @@ public class Board {
 
         if (comparer.manhattan() != manhattan()) return false;
 
+        for (int i = 0; i < N; i++)
+            for (int j = 0; j < N; j++)
+                if(board[i][j] != comparer.board[i][j]) return false;
+
         return true;
     }
 
