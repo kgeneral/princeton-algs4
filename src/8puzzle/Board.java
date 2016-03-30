@@ -21,26 +21,26 @@ public class Board {
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
                 board[i][j] = blocks[i][j];
+                int target = board[i][j];
 
-                if (board[i][j] != 0) {
-                    int target = board[i][j];
+                if (target != 0) {
                     int goal = i * N + j + 1;
+                    if (goal >= N * N) goal = 0;
 
                     if (target != goal) {
                         hamming += 1;
-                        int row = goal / N;
-                        int column = goal % N;
-                        if (i != N - 1 || j != N - 1)
-                            manhattan += Math.abs(i - row) + Math.abs(j - column);
+                        int row = (target - 1) / N;
+                        int column = (target - 1) % N;
+                        manhattan += Math.abs(i - row) + Math.abs(j - column);
                     }
-
-                }
-                else {
+                } else {
                     blankSquareRow = i;
                     blankSquareColumn = j;
                 }
             }
         }
+
+        dimension();
     }
 
     // board dimension N
@@ -81,7 +81,7 @@ public class Board {
 
         for (int i = 0; i < N; i++)
             for (int j = 0; j < N; j++)
-                if(board[i][j] != comparer.board[i][j]) return false;
+                if (board[i][j] != comparer.board[i][j]) return false;
 
         return true;
     }
