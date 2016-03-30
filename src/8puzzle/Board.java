@@ -6,7 +6,7 @@ public class Board {
     private int N;
     private int[][] board;
 
-    private int[] hamming;
+    private int hamming;
     private int[] manhattan;
 
     private int blankSquareRow;
@@ -17,7 +17,6 @@ public class Board {
     public Board(int[][] blocks) {
         N = blocks.length;
         board = new int[N][N];
-        hamming = new int[N * N];
         manhattan = new int[N * N];
 
         String[] index = new String[N * N];
@@ -41,7 +40,7 @@ public class Board {
 
                 if (board[i][j] != 0)
                     if (board[i][j] != i * N + j + 1)
-                        hamming[i * N + j] = 1;
+                        hamming += 1;
 
                 int target = i * N + j + 1;
 
@@ -65,9 +64,6 @@ public class Board {
 
     // number of blocks out of place
     public int hamming() {
-        int hamming = 0;
-        for (int i = 0; i < this.hamming.length; i++)
-            hamming += this.hamming[i];
         return hamming;
     }
 
