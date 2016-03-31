@@ -158,6 +158,7 @@ public class KdTree {
 
     // a nearest neighbor in the set to point p; null if the set is empty
     public Point2D nearest(Point2D p) {
+        if(isEmpty()) return null;
         MinPQ<Point2D> nearests = new MinPQ<>((p1, p2) -> {
             if (p.distanceTo(p1) == p.distanceTo(p2))
                 return 0;
