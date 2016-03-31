@@ -1,7 +1,4 @@
-import edu.princeton.cs.algs4.Point2D;
-import edu.princeton.cs.algs4.Queue;
-import edu.princeton.cs.algs4.RectHV;
-import edu.princeton.cs.algs4.StdDraw;
+import edu.princeton.cs.algs4.*;
 
 public class KdTree {
 
@@ -160,32 +157,27 @@ public class KdTree {
 
     // a nearest neighbor in the set to point p; null if the set is empty
     public Point2D nearest(Point2D p) {
-        Point2D closest = new Point2D(Double.MAX_VALUE, Double.MAX_VALUE);
-        closest = nearest(p, closest, root);
-        return closest;
+        MinPQ<Point2D> nearests = new MinPQ<>((p1, p2) -> {
+            if (p.distanceTo(p1) == p.distanceTo(p2))
+                return 0;
+
+            return (p.distanceTo(p1) < p.distanceTo(p2)) ? -1 : 1;
+        });
+        nearests.insert(root.p);
+        nearest(nearests, p, root);
+        return nearests.delMin();
     }
 
-    // if the closest point discovered so far is closer than the distance between the query point and the rectangle corresponding to a node,
-    // there is no need to explore that node (or its subtrees).
-    private Point2D nearest(Point2D query, Point2D closest, Node node) {
-        if (node == null) return closest;
+    private void nearest(MinPQ<Point2D> nearests, Point2D query, Node node) {
+        if (node == null) return;
+        Point2D closest = nearests.min();
         if(node.rect.distanceTo(query) < closest.distanceTo(query)) {
-            Point2D currentClosest = closest;
-            if(currentClosest.distanceTo(query) > node.p.distanceTo(query))
-                currentClosest = node.p;
+            if(closest.distanceTo(query) > node.p.distanceTo(query))
+                nearests.insert(node.p);
 
-            Point2D nearestLeft = nearest(query, closest, node.lb);
-            if(currentClosest.distanceTo(query) > nearestLeft.distanceTo(query))
-                currentClosest = nearestLeft;
-
-            Point2D nearestRight = nearest(query, closest, node.rt);
-            if(currentClosest.distanceTo(query) > nearestRight.distanceTo(query))
-                currentClosest = node.p;
-
-            return currentClosest;
+             nearest(nearests, query, node.lb);
+             nearest(nearests, query, node.rt);
         }
-
-        return closest;
     }
 
     // unit testing of the methods (optional)
