@@ -80,8 +80,10 @@ public class KdTree {
     // add the point to the set (if it is not already in the set)
     public void insert(Point2D p) {
         if (contains(p)) return;
+        N++;
         if (root == null) {
             root = new Node(p);
+
             return;
         }
         Node cursor = root;
@@ -98,7 +100,6 @@ public class KdTree {
             prev.lb = new Node(p, prev);
         else
             prev.rt = new Node(p, prev);
-        N++;
     }
 
     // does the set contain point p?
