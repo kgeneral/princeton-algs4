@@ -15,7 +15,7 @@ import edu.princeton.cs.algs4.StdOut;
 
 public class KdTreeVisualizer {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         RectHV rect = new RectHV(0.0, 0.0, 1.0, 1.0);
         StdDraw.show(0);
         KdTree kdtree = new KdTree();
@@ -31,6 +31,7 @@ public class KdTreeVisualizer {
                     StdDraw.clear();
                     kdtree.draw();
                 }
+                Thread.sleep(100);
             }
             StdDraw.show(50);
         }
