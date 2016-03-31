@@ -7,7 +7,7 @@ by Kevin Wayne, Robert Sedgewick
 - [x] Programming Assignment 2 - Randomized Queues and Deques (89.52)
 - [x] Programming Assignment 3 - Pattern Recognition Assignment (92.68)
 - [ ] Programming Assignment 4 - 8-Puzzle.pdf
-- [ ] Programming Assignment 5 - Kd-Trees.pdf
+- [x] Programming Assignment 5 - Kd-Trees.pdf (95.24)
 - [ ] TBD
 
 ### Part II
