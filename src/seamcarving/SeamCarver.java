@@ -1,23 +1,26 @@
 import edu.princeton.cs.algs4.Picture;
 
 public class SeamCarver {
+    private Picture source;
+
     // create a seam carver object based on the given picture
     public SeamCarver(Picture picture) {
+        source = new Picture(picture);
     }
 
     // current picture
     public Picture picture() {
-        return null;
+        return source;
     }
 
     // width of current picture
     public int width() {
-        return 0;
+        return source.width();
     }
 
     // height of current picture
     public int height() {
-        return 0;
+        return source.height();
     }
 
     // energy of pixel at column x and row y
