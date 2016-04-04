@@ -9,7 +9,7 @@ public class SAP {
 
     // constructor takes a digraph (not necessarily a DAG)
     public SAP(Digraph G) {
-        source = G;
+        source = new Digraph(G);
         shortenPathes = new BreadthFirstDirectedPaths[source.V()];
         for (int v = 0; v < source.V(); v++) {
             shortenPathes[v] = new BreadthFirstDirectedPaths(source, v);
@@ -54,9 +54,9 @@ public class SAP {
 
     private void ancestors(SET<Integer> ancestors, int w) {
         if(ancestors.contains(w)) return;
+        ancestors.add(w);
         Iterable<Integer> adjs = source.adj(w);
         for (int v : adjs) {
-            ancestors.add(v);
             ancestors(ancestors, v);
         }
     }
