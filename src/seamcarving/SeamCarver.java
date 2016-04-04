@@ -1,6 +1,6 @@
 import edu.princeton.cs.algs4.Picture;
 
-import java.awt.Color;
+import java.awt.*;
 
 public class SeamCarver {
     private Picture source;
@@ -37,12 +37,41 @@ public class SeamCarver {
 
     // sequence of indices for horizontal seam
     public int[] findHorizontalSeam() {
+
         return new int[0];
     }
 
     // sequence of indices for vertical seam
     public int[] findVerticalSeam() {
-        return new int[0];
+        int[] verticalSeam = null;
+        double minVerticalSum = Double.MAX_VALUE;
+        for (int x = 0; x < width(); x++) {
+
+            int indexX = x;
+            int[] currentVerticalSeam = new int[height()];
+            double currentVerticalSum = 0;
+            for (int y = 0; y < height() - 1; y++) {
+                int leftIndex = indexX;
+                int rightIndex = indexX;
+                if (indexX > 0)
+                    leftIndex = (energies[indexX - 1][y] < energies[indexX][y]) ? indexX - 1 : indexX;
+                if (indexX < width() - 1)
+                    rightIndex = (energies[indexX + 1][y] < energies[indexX][y]) ? indexX + 1 : indexX;
+
+                indexX = (energies[leftIndex][y] < energies[rightIndex][y]) ? leftIndex : rightIndex;
+
+                currentVerticalSeam[y] = indexX;
+                currentVerticalSum += energies[indexX][y];
+            }
+            currentVerticalSeam[height() - 1] = indexX;
+            if (minVerticalSum > currentVerticalSum) {
+                minVerticalSum = currentVerticalSum;
+                verticalSeam = currentVerticalSeam;
+            }
+
+        }
+
+        return verticalSeam;
     }
 
     // remove horizontal seam from current picture
