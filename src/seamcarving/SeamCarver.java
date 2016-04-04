@@ -30,8 +30,6 @@ public class SeamCarver {
         if (isBorder(x, y))
             return 1000;
 
-        Color target = source.get(x, y);
-
         Color left = source.get(x - 1, y);
         Color right = source.get(x + 1, y);
         Color top = source.get(x, y - 1);
