@@ -11,16 +11,22 @@ public class SAP {
     public SAP(Digraph G) {
         source = new Digraph(G);
         shortenPathes = new BreadthFirstDirectedPaths[source.V()];
-        for (int v = 0; v < source.V(); v++) {
+    }
+
+    private int getAncestralPathLength(int v, int w, int a) {
+        if (shortenPathes[v] == null)
             shortenPathes[v] = new BreadthFirstDirectedPaths(source, v);
-        }
+        if (shortenPathes[w] == null)
+            shortenPathes[w] = new BreadthFirstDirectedPaths(source, w);
+
+        return shortenPathes[v].distTo(a) + shortenPathes[w].distTo(a);
     }
 
     // length of shortest ancestral path between v and w; -1 if no such path
     public int length(int v, int w) {
         int commonAncestor = ancestor(v, w);
         if (commonAncestor < 0) return -1;
-        return shortenPathes[v].distTo(commonAncestor) + shortenPathes[w].distTo(commonAncestor);
+        return getAncestralPathLength(v, w, commonAncestor);
     }
 
     // a common ancestor of v and w that participates in a shortest ancestral path; -1 if no such path
@@ -37,11 +43,13 @@ public class SAP {
                     commonAncestors.add(ancestorV);
 
         int dist = Integer.MAX_VALUE;
-        for (int candidate : commonAncestors)
-            if (dist > shortenPathes[v].distTo(candidate) + shortenPathes[w].distTo(candidate)) {
-                dist = shortenPathes[v].distTo(candidate) + shortenPathes[w].distTo(candidate);
+        for (int candidate : commonAncestors) {
+            int ancestralPathLength = getAncestralPathLength(v, w, candidate);
+            if (dist > ancestralPathLength) {
+                dist = ancestralPathLength;
                 result = candidate;
             }
+        }
 
         return result;
     }
@@ -53,7 +61,7 @@ public class SAP {
     }
 
     private void ancestors(SET<Integer> ancestors, int w) {
-        if(ancestors.contains(w)) return;
+        if (ancestors.contains(w)) return;
         ancestors.add(w);
         Iterable<Integer> adjs = source.adj(w);
         for (int v : adjs) {
@@ -68,8 +76,9 @@ public class SAP {
         for (int v1 : v)
             for (int w1 : w) {
                 int candidate = ancestor(v1, w1);
-                if (dist < shortenPathes[v1].distTo(candidate) + shortenPathes[w1].distTo(candidate)) {
-                    dist = shortenPathes[v1].distTo(candidate) + shortenPathes[w1].distTo(candidate);
+                int ancestralPathLength = getAncestralPathLength(v1, w1, candidate);
+                if (dist > ancestralPathLength) {
+                    dist = ancestralPathLength;
                     result = dist;
                 }
             }
@@ -84,8 +93,9 @@ public class SAP {
         for (int v1 : v)
             for (int w1 : w) {
                 int candidate = ancestor(v1, w1);
-                if (dist < shortenPathes[v1].distTo(candidate) + shortenPathes[w1].distTo(candidate)) {
-                    dist = shortenPathes[v1].distTo(candidate) + shortenPathes[w1].distTo(candidate);
+                int ancestralPathLength = getAncestralPathLength(v1, w1, candidate);
+                if (dist > ancestralPathLength) {
+                    dist = ancestralPathLength;
                     result = candidate;
                 }
             }
