@@ -1,38 +1,15 @@
 import edu.princeton.cs.algs4.Bag;
 import edu.princeton.cs.algs4.Digraph;
 import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.algs4.SET;
 
 import java.util.Map;
 import java.util.TreeMap;
 
 public class WordNet {
 
-    private class Synset implements Comparable<Synset> {
-        String synsetNoun;
-        int synsetId;
-        String gloss;
-
-        public Synset(String synsetNoun, int synsetId, String gloss) {
-            this.synsetNoun = synsetNoun;
-            this.synsetId = synsetId;
-            this.gloss = gloss;
-        }
-
-        public Synset(String word) {
-            this.synsetNoun = word;
-        }
-
-        @Override
-        public int compareTo(Synset target) {
-            if (synsetNoun.equals(target.synsetNoun))
-                return 0;
-
-            return synsetNoun.hashCode() - target.synsetNoun.hashCode();
-        }
-    }
-
     private Map<Integer, String> synIdSetMap;
-    private Map<String, Integer> nounSynIdMap;
+    private Map<String, SET<Integer>> nounSynIdMap;
     private SAP sap;
 
     // constructor takes the name of the two input files
@@ -50,8 +27,14 @@ public class WordNet {
 
             this.synIdSetMap.put(synsetId, tokens[1]);
 
-            for (String noun : synsetNouns)
-                this.nounSynIdMap.put(noun, synsetId);
+
+            for (String noun : synsetNouns) {
+                SET<Integer> list = this.nounSynIdMap.get(noun);
+                if (list == null)
+                    list = new SET<>();
+                list.add(synsetId);
+                this.nounSynIdMap.put(noun, list);
+            }
         }
 
         Digraph digraph = new Digraph(synsetId + 1);
@@ -90,10 +73,16 @@ public class WordNet {
         Bag<Integer> v = new Bag<>();
         Bag<Integer> w = new Bag<>();
 
-        for (String noun : nounsA)
-            v.add(nounSynIdMap.get(noun));
-        for (String noun : nounsB)
-            w.add(nounSynIdMap.get(noun));
+        for (String noun : nounsA) {
+            SET<Integer> list = nounSynIdMap.get(noun);
+            if (list != null)
+                list.forEach(v::add);
+        }
+        for (String noun : nounsB) {
+            SET<Integer> list = nounSynIdMap.get(noun);
+            if (list != null)
+                list.forEach(w::add);
+        }
 
         return sap.length(v, w);
     }
@@ -107,10 +96,16 @@ public class WordNet {
         Bag<Integer> v = new Bag<>();
         Bag<Integer> w = new Bag<>();
 
-        for (String noun : nounsA)
-            v.add(nounSynIdMap.get(noun));
-        for (String noun : nounsB)
-            w.add(nounSynIdMap.get(noun));
+        for (String noun : nounsA) {
+            SET<Integer> list = nounSynIdMap.get(noun);
+            if (list != null)
+                list.forEach(v::add);
+        }
+        for (String noun : nounsB) {
+            SET<Integer> list = nounSynIdMap.get(noun);
+            if (list != null)
+                list.forEach(w::add);
+        }
 
         int shortestAncestor = sap.ancestor(v, w);
         String shortestAncestorSynset = null;
