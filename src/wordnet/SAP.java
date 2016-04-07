@@ -5,21 +5,36 @@ import edu.princeton.cs.algs4.SET;
 public class SAP {
 
     private Digraph source;
-    private BreadthFirstDirectedPaths[] shortenPathes;
 
     // constructor takes a digraph (not necessarily a DAG)
     public SAP(Digraph G) {
         source = new Digraph(G);
-        shortenPathes = new BreadthFirstDirectedPaths[source.V()];
+        //shortenPathes = new BreadthFirstDirectedPaths[source.V()];
     }
 
     private int getAncestralPathLength(int v, int w, int a) {
-        if (shortenPathes[v] == null)
-            shortenPathes[v] = new BreadthFirstDirectedPaths(source, v);
-        if (shortenPathes[w] == null)
-            shortenPathes[w] = new BreadthFirstDirectedPaths(source, w);
+        BreadthFirstDirectedPaths shortenPathV = new BreadthFirstDirectedPaths(source, v);
+        BreadthFirstDirectedPaths shortenPathW = new BreadthFirstDirectedPaths(source, w);
+//        if (shortenPathes[v] == null) {
+//            shortenPathes[v] = new BreadthFirstDirectedPaths(source, v);
+//            currentShortenPathes++;
+//        }
+//        if (shortenPathes[w] == null) {
+//            shortenPathes[w] = new BreadthFirstDirectedPaths(source, w);
+//            currentShortenPathes++;
+//        }
 
-        return shortenPathes[v].distTo(a) + shortenPathes[w].distTo(a);
+        int result = shortenPathV.distTo(a) + shortenPathW.distTo(a);
+//        leastInitializedVertices.enqueue(v);
+//        leastInitializedVertices.enqueue(w);
+//
+//        while (currentShortenPathes > maxShortenPathes) {
+//
+//            shortenPathes[leastInitializedVertices.dequeue()] = null;
+//            currentShortenPathes--;
+//        }
+
+        return result;
     }
 
     // length of shortest ancestral path between v and w; -1 if no such path
