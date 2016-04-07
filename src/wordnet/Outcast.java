@@ -13,9 +13,21 @@ public class Outcast {
     // di = dist(Ai, A1) + dist(Ai, A2) + ... + dist(Ai, An)
     // and return a noun At for which dt is maximum.
     public String outcast(String[] nouns) {
+        String outcastNoun = null;
+        int maxDist = Integer.MIN_VALUE;
+        for (String nounI : nouns) {
+            int dist = 0;
+            for (String noun : nouns)
+                if (!noun.equals(nounI))
+                    dist += wordnet.distance(nounI, noun);
 
+            if (maxDist < dist) {
+                maxDist = dist;
+                outcastNoun = nounI;
+            }
+        }
 
-        return null;
+        return outcastNoun;
     }
 
     // see test client below
