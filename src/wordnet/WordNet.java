@@ -74,11 +74,15 @@ public class WordNet {
         Bag<Integer> w = new Bag<>();
 
         for (String noun : nounsA) {
+            if (!isNoun(noun))
+                throw new IllegalArgumentException();
             SET<Integer> list = nounSynIdMap.get(noun);
             if (list != null)
                 list.forEach(v::add);
         }
         for (String noun : nounsB) {
+            if (!isNoun(noun))
+                throw new IllegalArgumentException();
             SET<Integer> list = nounSynIdMap.get(noun);
             if (list != null)
                 list.forEach(w::add);
