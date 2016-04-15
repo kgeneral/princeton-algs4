@@ -32,7 +32,7 @@ public class BaseballElimination {
         In baseballEliminationInput = new In(filename);
         int index = 0;
         while (baseballEliminationInput.hasNextLine()) {
-            String line = baseballEliminationInput.readLine();
+            String line = baseballEliminationInput.readLine().trim();
             String[] tokens = line.split("\\s+");
             if (tokens.length == 1) {
                 initialize(Integer.parseInt(tokens[0]));
