@@ -2,6 +2,9 @@ import edu.princeton.cs.algs4.Bag;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdOut;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /*
     In the baseball elimination problem, there is a division consisting of N teams.
     At some point during the season, team i has w[i] wins, l[i] losses, r[i] remaining games,
@@ -14,14 +17,17 @@ import edu.princeton.cs.algs4.StdOut;
 public class BaseballElimination {
 
     private int size;
+    private Map<String, Integer> teamIndexes;
     private String[] teamNames;
     private int[] wins;
     private int[] losses;
-    private int[] remainings;
-    private int[][] leftGames;
+    private int[] remaining;
+    private int[][] against;
 
     // create a baseball division from given filename in format specified below
     public BaseballElimination(String filename) {
+
+        teamIndexes = new HashMap<>();
 
         In baseballEliminationInput = new In(filename);
         int index = 0;
@@ -34,14 +40,15 @@ public class BaseballElimination {
             }
 
             teamNames[index] = tokens[0];
+            teamIndexes.put(teamNames[index], index);
             wins[index] = Integer.parseInt(tokens[1]);
             losses[index] = Integer.parseInt(tokens[2]);
-            remainings[index] = Integer.parseInt(tokens[3]);
+            remaining[index] = Integer.parseInt(tokens[3]);
 
             for (int i = 4; i < tokens.length; i++) {
                 int opponentIndex = i - 4;
                 if (index == opponentIndex) continue;
-                leftGames[index][opponentIndex] = Integer.parseInt(tokens[i]);
+                against[index][opponentIndex] = Integer.parseInt(tokens[i]);
             }
 
             index++;
@@ -53,8 +60,8 @@ public class BaseballElimination {
         teamNames = new String[size];
         wins = new int[size];
         losses = new int[size];
-        remainings = new int[size];
-        leftGames = new int[size][size];
+        remaining = new int[size];
+        against = new int[size][size];
     }
 
     // number of teams
@@ -72,22 +79,22 @@ public class BaseballElimination {
 
     // number of wins for given team
     public int wins(String team) {
-        return 0;
+        return wins[teamIndexes.get(team)];
     }
 
     // number of losses for given team
     public int losses(String team) {
-        return 0;
+        return losses[teamIndexes.get(team)];
     }
 
     // number of remaining games for given team
     public int remaining(String team) {
-        return 0;
+        return remaining[teamIndexes.get(team)];
     }
 
     // number of remaining games between team1 and team2
     public int against(String team1, String team2) {
-        return 0;
+        return against[teamIndexes.get(team1)][teamIndexes.get(team2)];
     }
 
     // is given team eliminated?
