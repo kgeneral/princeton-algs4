@@ -13,7 +13,7 @@ by Kevin Wayne, Robert Sedgewick
 ### Part II
 - [x] Programming Assignment 1 - WordNet (91.30)
 - [ ] Programming Assignment 2 - Seam Carving
-- [ ] TBD
+- [ ] Programming Assignment 3 - Baseball Elimination
 
 ##reference
 - https://class.coursera.org/algs4partI-010
