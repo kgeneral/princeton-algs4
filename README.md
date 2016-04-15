@@ -11,7 +11,7 @@ by Kevin Wayne, Robert Sedgewick
 - [ ] TBD
 
 ### Part II
-- [ ] Programming Assignment 1 - WordNet
+- [x] Programming Assignment 1 - WordNet (91.30)
 - [ ] Programming Assignment 2 - Seam Carving
 - [ ] TBD
 
