@@ -1,18 +1,39 @@
+import edu.princeton.cs.algs4.Bag;
+import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdOut;
 
 public class BaseballElimination {
+
+    private int size;
+    private Bag<String> teams;
+
     // create a baseball division from given filename in format specified below
     public BaseballElimination(String filename) {
+
+        teams = new Bag<>();
+
+        In baseballEliminationInput = new In(filename);
+        while (baseballEliminationInput.hasNextLine()) {
+            String line = baseballEliminationInput.readLine();
+            String[] tokens = line.split("\\s+");
+            if(tokens.length == 1) {
+                size = Integer.parseInt(tokens[0]);
+                continue;
+            }
+
+            String teamName = tokens[0];
+            teams.add(teamName);
+        }
     }
 
     // number of teams
     public int numberOfTeams() {
-        return 0;
+        return teams.size();
     }
 
     // all teams
     public Iterable<String> teams() {
-        return null;
+        return teams;
     }
 
     // number of wins for given team
