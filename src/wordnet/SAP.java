@@ -2,39 +2,40 @@ import edu.princeton.cs.algs4.BreadthFirstDirectedPaths;
 import edu.princeton.cs.algs4.Digraph;
 import edu.princeton.cs.algs4.SET;
 
+import java.util.Map;
+import java.util.TreeMap;
+
 public class SAP {
 
     private Digraph source;
 
+    private Map<String, Integer> ancestralPathLengthes;
+
     // constructor takes a digraph (not necessarily a DAG)
     public SAP(Digraph G) {
         source = new Digraph(G);
-        //shortenPathes = new BreadthFirstDirectedPaths[source.V()];
+        ancestralPathLengthes = new TreeMap<>();
     }
 
     private int getAncestralPathLength(int v, int w, int a) {
+        String vwKey = generateKey(v, w, a);
+        String wvKey = generateKey(w, v, a);
+        if (ancestralPathLengthes.containsKey(vwKey))
+            return ancestralPathLengthes.get(vwKey);
+        if (ancestralPathLengthes.containsKey(wvKey))
+            return ancestralPathLengthes.get(wvKey);
+
         BreadthFirstDirectedPaths shortenPathV = new BreadthFirstDirectedPaths(source, v);
         BreadthFirstDirectedPaths shortenPathW = new BreadthFirstDirectedPaths(source, w);
-//        if (shortenPathes[v] == null) {
-//            shortenPathes[v] = new BreadthFirstDirectedPaths(source, v);
-//            currentShortenPathes++;
-//        }
-//        if (shortenPathes[w] == null) {
-//            shortenPathes[w] = new BreadthFirstDirectedPaths(source, w);
-//            currentShortenPathes++;
-//        }
 
         int result = shortenPathV.distTo(a) + shortenPathW.distTo(a);
-//        leastInitializedVertices.enqueue(v);
-//        leastInitializedVertices.enqueue(w);
-//
-//        while (currentShortenPathes > maxShortenPathes) {
-//
-//            shortenPathes[leastInitializedVertices.dequeue()] = null;
-//            currentShortenPathes--;
-//        }
+        ancestralPathLengthes.put(vwKey, result);
 
         return result;
+    }
+
+    private String generateKey(int v, int w, int a) {
+        return v + "_" + w + "_" + a;
     }
 
     // length of shortest ancestral path between v and w; -1 if no such path
