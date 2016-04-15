@@ -1,6 +1,7 @@
 import edu.princeton.cs.algs4.Bag;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdOut;
+
 /*
     In the baseball elimination problem, there is a division consisting of N teams.
     At some point during the season, team i has w[i] wins, l[i] losses, r[i] remaining games,
@@ -13,34 +14,59 @@ import edu.princeton.cs.algs4.StdOut;
 public class BaseballElimination {
 
     private int size;
-    private Bag<String> teams;
+    private String[] teamNames;
+    private int[] wins;
+    private int[] losses;
+    private int[] remainings;
+    private int[][] leftGames;
 
     // create a baseball division from given filename in format specified below
     public BaseballElimination(String filename) {
 
-        teams = new Bag<>();
-
         In baseballEliminationInput = new In(filename);
+        int index = 0;
         while (baseballEliminationInput.hasNextLine()) {
             String line = baseballEliminationInput.readLine();
             String[] tokens = line.split("\\s+");
-            if(tokens.length == 1) {
-                size = Integer.parseInt(tokens[0]);
+            if (tokens.length == 1) {
+                initialize(Integer.parseInt(tokens[0]));
                 continue;
             }
 
-            String teamName = tokens[0];
-            teams.add(teamName);
+            teamNames[index] = tokens[0];
+            wins[index] = Integer.parseInt(tokens[1]);
+            losses[index] = Integer.parseInt(tokens[2]);
+            remainings[index] = Integer.parseInt(tokens[3]);
+
+            for (int i = 4; i < tokens.length; i++) {
+                int opponentIndex = i - 4;
+                if (index == opponentIndex) continue;
+                leftGames[index][opponentIndex] = Integer.parseInt(tokens[i]);
+            }
+
+            index++;
         }
+    }
+
+    private void initialize(int size) {
+        this.size = size;
+        teamNames = new String[size];
+        wins = new int[size];
+        losses = new int[size];
+        remainings = new int[size];
+        leftGames = new int[size][size];
     }
 
     // number of teams
     public int numberOfTeams() {
-        return teams.size();
+        return size;
     }
 
     // all teams
     public Iterable<String> teams() {
+        Bag<String> teams = new Bag<>();
+        for (String team : teamNames)
+            teams.add(team);
         return teams;
     }
 
