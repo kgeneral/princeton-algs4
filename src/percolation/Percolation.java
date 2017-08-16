@@ -8,6 +8,8 @@ public class Percolation {
     private int virtualTopIndex;
     private int virtualBottomIndex;
 
+    private int numberOfOpenSites = 0;
+
     private WeightedQuickUnionUF unionFindForUpwardConnectivity;
     private WeightedQuickUnionUF unionFindForGlobal;
 
@@ -38,6 +40,8 @@ public class Percolation {
             throw new IndexOutOfBoundsException();
 
         int index = (i - 1) * N + j - 1;
+        if(filter[index] != 1)
+            numberOfOpenSites++;
         filter[index] = 1;
         if (j < N && isOpen(i, j + 1))
             union(index, index + 1);
@@ -67,6 +71,10 @@ public class Percolation {
         int index = (i - 1) * N + j - 1;
         return isOpen(i, j) && unionFindForGlobal.connected(index, virtualTopIndex)
                 && unionFindForUpwardConnectivity.connected(index, virtualTopIndex);
+    }
+
+    public int numberOfOpenSites() {
+        return numberOfOpenSites;
     }
 
     // does the system percolate?
