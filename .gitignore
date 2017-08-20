@@ -2,3 +2,5 @@
 out/**
 *.iml
 *.zip
+.classpath
+.project
