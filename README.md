@@ -4,7 +4,7 @@ by Kevin Wayne, Robert Sedgewick
 ## Solved status
 ### Part I
 - [x] Programming Assignment 1 - Percolation (84)
-- [ ] Programming Assignment 2 - Randomized Queues and Deques (77)
+- [x] Programming Assignment 2 - Randomized Queues and Deques (89)
 - [x] Programming Assignment 3 - Pattern Recognition Assignment (92.68)
 - [ ] Programming Assignment 4 - 8-Puzzle
 - [x] Programming Assignment 5 - Kd-Trees (95.24)
